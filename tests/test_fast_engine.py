@@ -36,6 +36,7 @@ sys.modules.setdefault('rich.table', rich_mod.table)
 from fast_engine.app import create_app
 from fast_engine.utils import greet
 from fast_engine.config import Config
+from fast_engine.core import FastEngine
 import importlib
 
 
