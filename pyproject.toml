@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fast-engine"
+version = "0.1.0"
+description = "Fast engine project"
+authors = [ { name = "Unknown", email = "unknown@example.com" } ]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "aiohttp",
+    "jinja2",
+    "pyyaml",
+    "typer",
+    "rich",
+]
+
+[project.scripts]
+fast-engine = "fast_engine.cli:app"

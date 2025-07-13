@@ -1,3 +1,4 @@
+
 """Fast Engine package."""
 
 __all__ = ["main"]
