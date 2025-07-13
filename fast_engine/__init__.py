@@ -11,17 +11,18 @@ from pathlib import Path
 def get_templates_path():
     """Obtener path de templates"""
     package_dir = Path(__file__).parent
-    templates_path = package_dir.parent / "templates"
-    
-    if templates_path.exists():
-        return str(templates_path)
-    
-    # Fallback para instalacion en site-packages
-    fallback_path = package_dir / "templates"
-    if fallback_path.exists():
-        return str(fallback_path)
-    
-    # Ultimo fallback
+
+    # Primero buscar dentro del paquete instalado
+    in_package = package_dir / "templates"
+    if in_package.exists():
+        return str(in_package)
+
+    # Fallback para casos donde los templates estan junto al paquete
+    sibling = package_dir.parent / "templates"
+    if sibling.exists():
+        return str(sibling)
+
+    # Ultimo recurso: ruta relativa
     return "templates"
 
 TEMPLATES_PATH = get_templates_path()
