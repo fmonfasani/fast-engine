@@ -183,4 +183,9 @@ DATABASE_URL=postgresql://user:password@localhost:5433/{app_name.lower().replace
     
     def list_templates(self) -> List[str]:
         """Listar templates disponibles"""
-        return ["saas-basic"]
+        templates = []
+        if self.templates_path.exists():
+            for entry in self.templates_path.iterdir():
+                if entry.is_dir() and (entry / "template.yml").is_file():
+                    templates.append(entry.name)
+        return templates

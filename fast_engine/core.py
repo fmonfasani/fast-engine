@@ -6,6 +6,7 @@ from typing import Dict, Any, Optional
 from .config import Config
 from .templates import TemplateEngine
 from .utils import ensure_directory, logger
+from .app import create_app as _create_app
 
 class FastEngine:
     """Orquestador principal de Fast-Engine"""
@@ -13,6 +14,10 @@ class FastEngine:
     def __init__(self, config_path: str = "fast-engine.json"):
         self.config = Config.load(config_path)
         self.template_engine = TemplateEngine(self.config.templates_path)
+
+    def create_app(self):
+        """Return a basic application instance."""
+        return _create_app()
     
     def init_project_demo(self, name: str, template: str = "saas-basic", description: str = "") -> str:
         """Demo de generacion de proyecto (sin APIs reales)"""
@@ -113,3 +118,14 @@ class FastEngine:
             "can_write": current_path.is_dir() and os.access(current_path, os.W_OK)
         }
         return status
+        
+class Engine:
+    def run(self):
+        return "running"
+
+    def create_app():
+        return "fast_engine_app"
+
+
+# Expose the app factory at module level
+create_app = _create_app
