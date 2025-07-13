@@ -231,16 +231,13 @@ DATABASE_URL=postgresql://user:password@localhost:5433/{app_name.lower().replace
             raise FileNotFoundError(f"Template config not found: {template_name}")
         return Template.from_file(path)
 
-    def list_templates(self) -> List[Template]:
-        """Listar templates disponibles"""
+    def list_templates(self) -> List[str]:
+        """List available template names."""
 
-        templates: List[Template] = []
+        names: List[str] = []
         if not self.templates_path.exists():
-            return templates
+            return names
         for item in self.templates_path.iterdir():
-            if item.is_dir():
-                try:
-                    templates.append(self.load_template_config(item.name))
-                except Exception as e:
-                    logger.warning(f"Error loading template {item.name}: {e}")
-        return templates
+            if item.is_dir() and (item / "template.yml").exists():
+                names.append(item.name)
+        return names

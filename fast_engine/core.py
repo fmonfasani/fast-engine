@@ -7,7 +7,9 @@ from .config import Config
 from .templates import TemplateEngine
 from .utils import ensure_directory, logger
 
-from .app import create_app  # re-export
+# Import the real application factory and keep an internal alias so we can
+# re-export it at module level without triggering a NameError during import
+from .app import create_app as _create_app
 
 class FastEngine:
     """Orquestador principal de Fast-Engine"""
@@ -119,7 +121,7 @@ class FastEngine:
                 "deepseek": bool(self.config.deepseek_api_key)
             },
             "templates_path": templates_path.exists(),
-            "available_templates": [t.name for t in self.template_engine.list_templates()],
+            "available_templates": self.template_engine.list_templates(),
             "current_directory": str(current_path),
             "output_path": self.config.output_path,
             "templates_absolute_path": str(templates_path.absolute()),
