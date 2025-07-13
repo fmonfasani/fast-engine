@@ -34,6 +34,17 @@ from .templates import Template
 
 
 try:
+    from .app import create_app  # type: ignore
+except Exception:  # pragma: no cover - optional dependency
+    create_app = None
+
+try:
+    from .cli import app as cli_app  # type: ignore
+except Exception:  # pragma: no cover - optional dependency
+    cli_app = None  # fallback when rich/typer are not installed
+
+
+try:
     from .cli import app as cli_app
 except Exception:  # pragma: no cover - optional dependency may be missing
     cli_app = None
@@ -52,3 +63,12 @@ __all__ = [
     "main",
 ]
 
+
+__all__ = [
+    "FastEngine",
+    "cli_app",
+    "Config",
+    "TEMPLATES_PATH",
+    "deploy",
+    "create_app",
+]
