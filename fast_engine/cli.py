@@ -1,3 +1,4 @@
+
 """CLI for fast-engine."""
 
 import typer
@@ -13,3 +14,4 @@ def main():
 
 if __name__ == "__main__":
     app()
+
