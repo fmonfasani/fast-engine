@@ -30,3 +30,8 @@ async def retry_async(
 def ensure_directory(path: Path):
     """Crear directorio si no existe"""
     path.mkdir(parents=True, exist_ok=True)
+
+
+def greet(name: str = "World") -> str:
+    """Return a greeting string."""
+    return f"Hello, {name}!"
