@@ -33,10 +33,10 @@ sys.modules.setdefault('rich', rich_mod)
 sys.modules.setdefault('rich.console', rich_mod.console)
 sys.modules.setdefault('rich.table', rich_mod.table)
 
-from fast_engine.app import create_app
+
 from fast_engine.utils import greet
 from fast_engine.config import Config
-from fast_engine.core import FastEngine, create_app
+
 import importlib
 
 
@@ -58,5 +58,3 @@ def test_deploy(tmp_path, monkeypatch):
     result = deploy_module.deploy(cfg)
     assert called
     assert str(tmp_path) in result
-
-

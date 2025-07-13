@@ -1,10 +1,26 @@
+import os
+from pathlib import Path
+from typing import Optional
+
 import typer
+from jinja2 import Environment, FileSystemLoader
+from rich import print as rprint
 from rich.console import Console
 from rich.table import Table
-from rich import print as rprint
-from typing import Optional
+
+
 from .core import FastEngine
-import os
+
+FAST_ENGINE_HOME = Path(os.environ.get("FAST_ENGINE_HOME", Path.home() / ".fast-engine"))
+
+def get_templates_dir() -> Path:
+    """Return directory containing built-in templates."""
+    return Path(__file__).resolve().parent.parent / "templates"
+
+def ensure_home() -> Path:
+    """Ensure FAST_ENGINE_HOME exists and return it."""
+    FAST_ENGINE_HOME.mkdir(parents=True, exist_ok=True)
+    return FAST_ENGINE_HOME
 
 app = typer.Typer(help="Fast-Engine: Generador rapido de proyectos full-stack")
 console = Console()
@@ -12,26 +28,48 @@ console = Console()
 @app.command()
 def init(
     name: str = typer.Argument(..., help="Nombre del proyecto"),
-    template: str = typer.Option("saas-basic", "--template", "-t", help="Template a usar"),
-    description: str = typer.Option("", "--description", "-d", help="Descripcion del proyecto")
+    template: Optional[str] = typer.Option(None, "--template", "-t", help="Template a usar"),
 ):
-    """Crear nuevo proyecto"""
-    try:
-        engine = FastEngine()
-        result = engine.init_project_demo(name, template, description)
-        rprint(f"[green]{result}[/green]")
-        
-        rprint("\n[bold cyan]EXITO! Proyecto creado exitosamente![/bold cyan]")
-        rprint(f"\n[yellow]Siguientes pasos:[/yellow]")
-        rprint(f"  cd {name}")
-        rprint(f"  python main.py")
-        rprint(f"  # o docker-compose up -d")
-        
-    except Exception as e:
-        rprint(f"[red]ERROR: {e}[/red]")
-        import traceback
-        rprint(f"[red]Traceback: {traceback.format_exc()}[/red]")
+    """Crear un nuevo proyecto a partir de un template"""
+    templates_dir = get_templates_dir()
+    available = [p.name for p in templates_dir.iterdir() if p.is_dir()]
+
+    if not available:
+        rprint("[red]No hay templates disponibles[/red]")
         raise typer.Exit(1)
+
+    if not template:
+        rprint("[cyan]Templates disponibles:[/cyan]")
+        for idx, t_name in enumerate(available, 1):
+            rprint(f"  {idx}. {t_name}")
+        choice = typer.prompt("Selecciona template", type=int)
+        if 1 <= choice <= len(available):
+            template = available[choice - 1]
+        else:
+            rprint("[red]Opcion invalida[/red]")
+            raise typer.Exit(1)
+    elif template not in available:
+        rprint(f"[red]Template '{template}' no encontrado[/red]")
+        raise typer.Exit(1)
+
+    env = Environment(loader=FileSystemLoader(str(templates_dir / template)), keep_trailing_newline=True)
+    project_dir = ensure_home() / name
+    project_dir.mkdir(parents=True, exist_ok=True)
+
+    for src in (templates_dir / template).rglob('*'):
+        if src.is_file():
+            rel = src.relative_to(templates_dir / template)
+            dest = project_dir / rel
+            if dest.suffix == '.j2':
+                dest = dest.with_suffix('')
+                template_obj = env.get_template(str(rel))
+                content = template_obj.render(project_name=name)
+            else:
+                content = src.read_text()
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(content)
+
+    rprint(f"[green]Proyecto creado en {project_dir}[/green]")
 
 @app.command()
 def doctor():
@@ -88,29 +126,25 @@ def version():
     rprint(f"[cyan]Fast-Engine v{__version__}[/cyan]")
     rprint("[dim]Generador rapido de proyectos full-stack[/dim]")
 
-@app.command()
-def templates():
+@app.command("list-templates")
+def list_templates():
     """Listar templates disponibles"""
     try:
-        engine = FastEngine()
-        templates = engine.template_engine.list_templates()
-        
-        if not templates:
+        templates_dir = get_templates_dir()
+        available = [p.name for p in templates_dir.iterdir() if p.is_dir()]
+
+        if not available:
             rprint("[yellow]No hay templates disponibles[/yellow]")
-            rprint("[dim]Los templates se crearan automaticamente cuando los necesites[/dim]")
             return
 
         table = Table(title="Templates Disponibles")
         table.add_column("Nombre", style="cyan")
-        table.add_column("Descripcion")
-        table.add_column("Version", style="magenta")
-        table.add_column("Autor", style="green")
 
-        for tpl in templates:
-            table.add_row(tpl.name, tpl.description, tpl.version, tpl.author)
-        
+        for t in available:
+            table.add_row(t)
+
         console.print(table)
-        
+
     except Exception as e:
         rprint(f"[red]ERROR: {e}[/red]")
 
