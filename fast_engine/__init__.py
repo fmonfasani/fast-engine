@@ -29,5 +29,6 @@ TEMPLATES_PATH = get_templates_path()
 from .core import FastEngine
 from .cli import app as cli_app
 from .config import Config
+from .deploy import deploy
 
-__all__ = ["FastEngine", "cli_app", "Config", "TEMPLATES_PATH"]
+__all__ = ["FastEngine", "cli_app", "Config", "TEMPLATES_PATH", "deploy"]
