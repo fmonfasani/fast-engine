@@ -93,24 +93,21 @@ def templates():
     """Listar templates disponibles"""
     try:
         engine = FastEngine()
-        available_templates = engine.template_engine.list_templates()
+        templates = engine.template_engine.list_templates()
         
-        if not available_templates:
+        if not templates:
             rprint("[yellow]No hay templates disponibles[/yellow]")
             rprint("[dim]Los templates se crearan automaticamente cuando los necesites[/dim]")
             return
-        
+
         table = Table(title="Templates Disponibles")
         table.add_column("Nombre", style="cyan")
         table.add_column("Descripcion")
-        
-        for template_name in available_templates:
-            try:
-                config = engine.template_engine.load_template_config(template_name)
-                description = config.get("description", "Sin descripcion")
-                table.add_row(template_name, description)
-            except Exception:
-                table.add_row(template_name, "Error cargando configuracion")
+        table.add_column("Version", style="magenta")
+        table.add_column("Autor", style="green")
+
+        for tpl in templates:
+            table.add_row(tpl.name, tpl.description, tpl.version, tpl.author)
         
         console.print(table)
         

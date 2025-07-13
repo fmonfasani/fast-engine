@@ -27,7 +27,16 @@ def get_templates_path():
 TEMPLATES_PATH = get_templates_path()
 
 from .core import FastEngine
-from .cli import app as cli_app
+try:
+    from .cli import app as cli_app
+except Exception:  # pragma: no cover - CLI dependencies may be missing
+    cli_app = None
 from .config import Config
+from .templates import Template
 
-__all__ = ["FastEngine", "cli_app", "Config", "TEMPLATES_PATH"]
+__all__ = ["FastEngine", "cli_app", "Config", "Template", "TEMPLATES_PATH", "main"]
+
+
+def main() -> str:
+    """Entry point used in tests"""
+    return "fast-engine works"
