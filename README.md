@@ -1,5 +1,16 @@
 # fast-engine
 
-## License
 
-This project is licensed under the terms of the [MIT License](LICENSE).
+Simple framework with a command line interface.
+
+Install via `pip`:
+
+```bash
+pip install fast-engine
+```
+
+Run the CLI:
+
+```bash
+fast-engine
+```
