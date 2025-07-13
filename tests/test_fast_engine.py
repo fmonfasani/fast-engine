@@ -13,7 +13,7 @@ def test_version_exists():
 
 
 def test_engine_run():
-    engine = Engine()
+    engine = FastEngine()
     assert engine.run() == "running"
 
 
