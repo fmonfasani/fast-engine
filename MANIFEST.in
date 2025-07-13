@@ -1,0 +1,65 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include templates *.yml *.j2 *.yaml *.md
+recursive-include templates *.js *.ts *.tsx *.json *.css *.conf
+recursive-exclude templates __pycache__
+recursive-exclude templates *.pyc
+recursive-exclude templates *.pyo
+
+---
+
+# setup.py alternativo (si prefieres usar setup.py en lugar de pyproject.toml)
+from setuptools import setup, find_packages
+import os
+
+# Leer README
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+# Leer requirements
+with open("requirements.txt", "r", encoding="utf-8") as fh:
+    requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+
+# Función para encontrar todos los archivos de templates
+def find_template_files():
+    template_files = []
+    for root, dirs, files in os.walk("templates"):
+        for file in files:
+            template_files.append(os.path.join(root, file))
+    return template_files
+
+setup(
+    name="fast-engine",
+    version="1.0.0",
+    author="Fast-Engine Team",
+    description="Fast Full-Stack Project Generator using LLM APIs + Templates",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/fast-engine/fast-engine",
+    packages=find_packages(include=["fast_engine", "fast_engine.*"]),
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+    ],
+    python_requires=">=3.8",
+    install_requires=requirements,
+    entry_points={
+        "console_scripts": [
+            "fast-engine=fast_engine.cli:app",
+        ],
+    },
+    # Incluir archivos de templates
+    data_files=[
+        ("fast_engine/templates", find_template_files())
+    ],
+    include_package_data=True,
+    zip_safe=False,
+)
