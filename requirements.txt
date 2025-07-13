@@ -1,5 +1,8 @@
+
+pytest
 aiohttp
 jinja2
 pyyaml
 typer
 rich
+

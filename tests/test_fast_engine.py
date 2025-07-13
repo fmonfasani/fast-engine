@@ -1,4 +1,10 @@
 import fast_engine
+
+
+
+def test_main():
+    assert fast_engine.main() == "fast-engine works"
+
 from fast_engine.core import Engine, create_app
 
 
@@ -13,3 +19,4 @@ def test_engine_run():
 
 def test_create_app():
     assert create_app() == "fast_engine_app"
+
