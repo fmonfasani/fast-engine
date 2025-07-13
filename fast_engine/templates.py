@@ -233,6 +233,7 @@ DATABASE_URL=postgresql://user:password@localhost:5433/{app_name.lower().replace
 
     def list_templates(self) -> List[Template]:
         """Listar templates disponibles"""
+
         templates: List[Template] = []
         if not self.templates_path.exists():
             return templates
