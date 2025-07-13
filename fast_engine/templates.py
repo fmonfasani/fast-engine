@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
 
 try:
@@ -17,7 +17,7 @@ class Template:
     description: str
     version: str = "0.0.0"
     author: str = "Unknown"
-    path: Path | None = None
+    path: Optional[Path] = None
 
     @classmethod
     def from_file(cls, path: Path) -> "Template":
