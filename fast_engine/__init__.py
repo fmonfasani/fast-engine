@@ -26,8 +26,11 @@ def get_templates_path():
 
 TEMPLATES_PATH = get_templates_path()
 
+
 from .core import FastEngine, Engine, create_app
 from .config import Config
+from .deploy import deploy
+
 
 try:
     from .cli import app as cli_app
@@ -47,3 +50,4 @@ __all__ = [
     "TEMPLATES_PATH",
     "main",
 ]
+

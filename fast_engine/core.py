@@ -14,6 +14,10 @@ class FastEngine:
     def __init__(self, config_path: str = "fast-engine.json"):
         self.config = Config.load(config_path)
         self.template_engine = TemplateEngine(self.config.templates_path)
+
+    def create_app():
+    # Your implementation here
+    pass
     
     def init_project_demo(self, name: str, template: str = "saas-basic", description: str = "") -> str:
         """Demo de generacion de proyecto (sin APIs reales)"""
