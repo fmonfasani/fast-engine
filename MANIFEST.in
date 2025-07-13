@@ -1,9 +1,10 @@
 include README.md
 include LICENSE
 include requirements.txt
-recursive-include templates *.yml *.j2 *.yaml *.md
-recursive-include templates *.js *.ts *.tsx *.json *.css *.conf
-recursive-exclude templates __pycache__
-recursive-exclude templates *.pyc
-recursive-exclude templates *.pyo
+recursive-include fast_engine/templates *.yml *.j2 *.yaml *.md
+recursive-include fast_engine/templates *.js *.ts *.tsx *.json *.css *.conf
+recursive-exclude fast_engine/templates __pycache__
+recursive-exclude fast_engine/templates *.pyc
+recursive-exclude fast_engine/templates *.pyo
+
 
