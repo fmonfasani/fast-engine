@@ -123,7 +123,7 @@ class Engine:
     def run(self):
         return "running"
 
-    def create_app():
+    def create_app(self):
         return "fast_engine_app"
 
 
