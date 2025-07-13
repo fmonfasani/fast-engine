@@ -30,7 +30,7 @@ TEMPLATES_PATH = get_templates_path()
 
 from .core import FastEngine, Engine, create_app
 from .config import Config
-from .deploy import deploy
+from .templates import Template
 
 
 try:
