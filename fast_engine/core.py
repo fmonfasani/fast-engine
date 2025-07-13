@@ -15,8 +15,8 @@ class FastEngine:
         self.template_engine = TemplateEngine(self.config.templates_path)
 
     def create_app():
-    # Your implementation here
-    pass
+        # Your implementation here
+        pass
     
     def init_project_demo(self, name: str, template: str = "saas-basic", description: str = "") -> str:
         """Demo de generacion de proyecto (sin APIs reales)"""
@@ -117,3 +117,10 @@ class FastEngine:
             "can_write": current_path.is_dir() and os.access(current_path, os.W_OK)
         }
         return status
+        
+class Engine:
+    def run(self):
+        return "running"
+
+def create_app():
+    return "fast_engine_app"
