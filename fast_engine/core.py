@@ -6,6 +6,7 @@ from typing import Dict, Any, Optional
 from .config import Config
 from .templates import TemplateEngine
 from .utils import ensure_directory, logger
+from .legacy import Engine, create_app
 
 class FastEngine:
     """Orquestador principal de Fast-Engine"""
