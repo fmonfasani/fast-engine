@@ -30,6 +30,11 @@ TEMPLATES_PATH = get_templates_path()
 from .core import FastEngine
 
 try:
+    from .app import create_app  # type: ignore
+except Exception:  # pragma: no cover - optional dependency
+    create_app = None
+
+try:
     from .cli import app as cli_app  # type: ignore
 except Exception:  # pragma: no cover - optional dependency
     cli_app = None  # fallback when rich/typer are not installed
@@ -37,4 +42,11 @@ except Exception:  # pragma: no cover - optional dependency
 from .config import Config
 from .deploy import deploy
 
-__all__ = ["FastEngine", "cli_app", "Config", "TEMPLATES_PATH", "deploy"]
+__all__ = [
+    "FastEngine",
+    "cli_app",
+    "Config",
+    "TEMPLATES_PATH",
+    "deploy",
+    "create_app",
+]
