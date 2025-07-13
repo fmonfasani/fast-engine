@@ -1,9 +1,5 @@
+"""fast-engine package."""
+__version__ = "0.1.0"
+__all__ = ["cli"]
 
-"""Fast Engine package."""
 
-
-__all__ = ["main"]
-
-def main():
-    """Return a message indicating that the engine is running."""
-    return "fast-engine works"
