@@ -1,11 +1,11 @@
 include README.md
 include LICENSE
 include requirements.txt
-recursive-include templates *.yml *.j2 *.yaml *.md
-recursive-include templates *.js *.ts *.tsx *.json *.css *.conf
-recursive-exclude templates __pycache__
-recursive-exclude templates *.pyc
-recursive-exclude templates *.pyo
+recursive-include fast_engine/templates *.yml *.j2 *.yaml *.md
+recursive-include fast_engine/templates *.js *.ts *.tsx *.json *.css *.conf
+recursive-exclude fast_engine/templates __pycache__
+recursive-exclude fast_engine/templates *.pyc
+recursive-exclude fast_engine/templates *.pyo
 
 ---
 
@@ -24,7 +24,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 # Función para encontrar todos los archivos de templates
 def find_template_files():
     template_files = []
-    for root, dirs, files in os.walk("templates"):
+    for root, dirs, files in os.walk("fast_engine/templates"):
         for file in files:
             template_files.append(os.path.join(root, file))
     return template_files

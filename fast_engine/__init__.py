@@ -11,23 +11,27 @@ from pathlib import Path
 def get_templates_path():
     """Obtener path de templates"""
     package_dir = Path(__file__).parent
-    templates_path = package_dir.parent / "templates"
-    
-    if templates_path.exists():
-        return str(templates_path)
-    
-    # Fallback para instalacion en site-packages
-    fallback_path = package_dir / "templates"
-    if fallback_path.exists():
-        return str(fallback_path)
-    
-    # Ultimo fallback
+
+    # Primero buscar dentro del paquete instalado
+    in_package = package_dir / "templates"
+    if in_package.exists():
+        return str(in_package)
+
+    # Fallback para casos donde los templates estan junto al paquete
+    sibling = package_dir.parent / "templates"
+    if sibling.exists():
+        return str(sibling)
+
+    # Ultimo recurso: ruta relativa
     return "templates"
 
 TEMPLATES_PATH = get_templates_path()
 
 
-from .core import FastEngine
+from .core import FastEngine, Engine, create_app
+from .config import Config
+from .templates import Template
+
 
 try:
     from .app import create_app  # type: ignore
@@ -39,8 +43,26 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     cli_app = None  # fallback when rich/typer are not installed
 
-from .config import Config
-from .deploy import deploy
+
+try:
+    from .cli import app as cli_app
+except Exception:  # pragma: no cover - optional dependency may be missing
+    cli_app = None
+
+def main() -> str:
+    """Entry point used in tests."""
+    return "fast-engine works"
+
+__all__ = [
+    "FastEngine",
+    "Engine",
+    "create_app",
+    "cli_app",
+    "Config",
+    "TEMPLATES_PATH",
+    "main",
+]
+
 
 __all__ = [
     "FastEngine",
