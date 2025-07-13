@@ -45,4 +45,4 @@ exclude = ["templates*", "tests*", "docs*", "examples*"]
 
 # Incluir archivos de templates como data files
 [tool.setuptools.package-data]
-fast_engine = ["../templates/**/*"]
+fast_engine = ["templates/**/*"]

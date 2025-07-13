@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Simple setup script for the fast-engine project.
 # It creates a Python virtual environment and installs the package in editable mode.
 set -euo pipefail
