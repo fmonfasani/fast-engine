@@ -1,6 +1,49 @@
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
+from dataclasses import dataclass
+
+try:
+    import yaml  # type: ignore
+except Exception:  # pragma: no cover - fallback when PyYAML is missing
+    yaml = None
 from .utils import logger
+
+
+@dataclass
+class Template:
+    """Template metadata"""
+
+    name: str
+    description: str
+    version: str = "0.0.0"
+    author: str = "Unknown"
+    path: Optional[Path] = None
+
+    @classmethod
+    def from_file(cls, path: Path) -> "Template":
+        if yaml:
+            with open(path, encoding="utf-8") as f:
+                data = yaml.safe_load(f) or {}
+        else:
+            data = {}
+            with open(path, encoding="utf-8") as f:
+                for line in f:
+                    if ":" in line:
+                        k, v = line.split(":", 1)
+                        data[k.strip()] = v.strip()
+
+        name = data.get("name")
+        description = data.get("description")
+        if not name or not description:
+            raise ValueError("Template name and description are required")
+
+        return cls(
+            name=name,
+            description=description,
+            version=data.get("version", "0.0.0"),
+            author=data.get("author", "Unknown"),
+            path=path.parent,
+        )
 
 class TemplateEngine:
     """Motor de templates funcional"""
@@ -181,11 +224,20 @@ DATABASE_URL=postgresql://user:password@localhost:5433/{app_name.lower().replace
 """
         }
     
+    def load_template_config(self, template_name: str) -> Template:
+        """Load template metadata from template.yml"""
+        path = self.templates_path / template_name / "template.yml"
+        if not path.exists():
+            raise FileNotFoundError(f"Template config not found: {template_name}")
+        return Template.from_file(path)
+
     def list_templates(self) -> List[str]:
-        """Listar templates disponibles"""
-        templates = []
-        if self.templates_path.exists():
-            for entry in self.templates_path.iterdir():
-                if entry.is_dir() and (entry / "template.yml").is_file():
-                    templates.append(entry.name)
-        return templates
+        """List available template names."""
+
+        names: List[str] = []
+        if not self.templates_path.exists():
+            return names
+        for item in self.templates_path.iterdir():
+            if item.is_dir() and (item / "template.yml").exists():
+                names.append(item.name)
+        return names

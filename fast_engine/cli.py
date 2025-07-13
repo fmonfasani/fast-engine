@@ -3,7 +3,11 @@ from pathlib import Path
 from typing import Optional
 
 import typer
-from jinja2 import Environment, FileSystemLoader
+try:
+    from jinja2 import Environment, FileSystemLoader
+except Exception:  # pragma: no cover - optional dependency
+    Environment = None  # type: ignore
+    FileSystemLoader = None  # type: ignore
 from rich import print as rprint
 from rich.console import Console
 from rich.table import Table
