@@ -5,7 +5,7 @@ import fast_engine
 def test_main():
     assert fast_engine.main() == "fast-engine works"
 
-from fast_engine.core import Engine, create_app
+from fast_engine.core import FastEngine, create_app
 
 
 def test_version_exists():
