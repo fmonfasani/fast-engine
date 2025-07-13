@@ -1,26 +1,18 @@
 #!/usr/bin/env bash
 
-# Fast-Engine setup script
-# Creates a virtual environment and installs project dependencies.
-
+# Simple setup script for the fast-engine project.
+# It creates a Python virtual environment and installs the package in editable mode.
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VENV_DIR="$ROOT_DIR/.venv"
-
-# Create virtual environment if it doesn't exist
-if [ ! -d "$VENV_DIR" ]; then
-    python3 -m venv "$VENV_DIR"
+# Create virtual environment if it does not exist
+if [ ! -d ".venv" ]; then
+    python3 -m venv .venv
 fi
 
-source "$VENV_DIR/bin/activate"
-
-# Upgrade pip and install dependencies
+source .venv/bin/activate
 pip install --upgrade pip
-pip install -r "$ROOT_DIR/requirements.txt"
+pip install -e .
 
-# Install project in editable mode
-pip install -e "$ROOT_DIR"
+echo "Setup complete. Activate the virtual environment with 'source .venv/bin/activate'."
+echo "FAST_ENGINE_HOME defaults to \$HOME/.fast-engine"
 
-echo "\nFast-Engine setup complete. Activate the environment with:\n  source $VENV_DIR/bin/activate"
-echo "Refer to README.md for usage instructions."
