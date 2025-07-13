@@ -26,8 +26,14 @@ def get_templates_path():
 
 TEMPLATES_PATH = get_templates_path()
 
+
 from .core import FastEngine
-from .cli import app as cli_app
+
+try:
+    from .cli import app as cli_app  # type: ignore
+except Exception:  # pragma: no cover - optional dependency
+    cli_app = None  # fallback when rich/typer are not installed
+
 from .config import Config
 
 __all__ = ["FastEngine", "cli_app", "Config", "TEMPLATES_PATH"]
