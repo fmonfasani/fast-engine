@@ -1,6 +1,5 @@
 # fast-engine
 
-
 Fast-Engine is a lightweight command line utility for quickly creating new project skeletons. It ships with a collection of example templates so you can start new services with sensible defaults in seconds.
 
 ## Installation
