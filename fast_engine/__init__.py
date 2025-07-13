@@ -35,5 +35,6 @@ except Exception:  # pragma: no cover - optional dependency
     cli_app = None  # fallback when rich/typer are not installed
 
 from .config import Config
+from .deploy import deploy
 
-__all__ = ["FastEngine", "cli_app", "Config", "TEMPLATES_PATH"]
+__all__ = ["FastEngine", "cli_app", "Config", "TEMPLATES_PATH", "deploy"]
