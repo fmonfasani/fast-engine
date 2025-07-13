@@ -1,5 +1,3 @@
-
-
 import sys
 import types
 from unittest import mock
@@ -35,6 +33,7 @@ sys.modules.setdefault('rich', rich_mod)
 sys.modules.setdefault('rich.console', rich_mod.console)
 sys.modules.setdefault('rich.table', rich_mod.table)
 
+from fast_engine.app import create_app
 from fast_engine.utils import greet
 from fast_engine.config import Config
 import importlib
