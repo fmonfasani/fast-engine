@@ -122,5 +122,5 @@ class Engine:
     def run(self):
         return "running"
 
-def create_app():
-    return "fast_engine_app"
+    def create_app():
+        return "fast_engine_app"
