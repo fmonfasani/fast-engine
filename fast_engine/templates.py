@@ -240,4 +240,3 @@ DATABASE_URL=postgresql://user:password@localhost:5433/{app_name.lower().replace
         for item in self.templates_path.iterdir():
             if item.is_dir() and (item / "template.yml").exists():
                 names.append(item.name)
-        return names
